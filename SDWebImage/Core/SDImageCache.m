@@ -462,7 +462,9 @@ static NSString * _defaultDiskCacheDirectory;
 #if SD_MAC
                 image = [[NSImage alloc] initWithCGImage:image.CGImage scale:image.scale orientation:kCGImagePropertyOrientationUp];
 #else
-                image = [[UIImage alloc] initWithCGImage:image.CGImage scale:image.scale orientation:image.imageOrientation];
+                if (!(options & SDImageCacheDecodeAllFramesAfterFinish)) {
+                    image = [[UIImage alloc] initWithCGImage:image.CGImage scale:image.scale orientation:image.imageOrientation];
+                }
 #endif
             }
         } else if (options & SDImageCacheMatchAnimatedImageClass) {
@@ -631,7 +633,9 @@ static NSString * _defaultDiskCacheDirectory;
 #if SD_MAC
                 image = [[NSImage alloc] initWithCGImage:image.CGImage scale:image.scale orientation:kCGImagePropertyOrientationUp];
 #else
-                image = [[UIImage alloc] initWithCGImage:image.CGImage scale:image.scale orientation:image.imageOrientation];
+                if (!(options & SDImageCacheDecodeAllFramesAfterFinish)) {
+                    image = [[UIImage alloc] initWithCGImage:image.CGImage scale:image.scale orientation:image.imageOrientation];
+                }
 #endif
             }
         } else if (options & SDImageCacheMatchAnimatedImageClass) {
