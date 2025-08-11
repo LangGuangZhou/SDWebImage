@@ -27,3 +27,6 @@ SDImageCoderOption const SDImageCoderEncodeMaxFileSize = @"encodeMaxFileSize";
 SDImageCoderOption const SDImageCoderEncodeEmbedThumbnail = @"encodeEmbedThumbnail";
 
 SDImageCoderOption const SDImageCoderWebImageContext = @"webImageContext";
+
+SDImageCoderOption const SDImageCoderDecodeAllFramesAfterFinish = @"decodeAllFramesAfterFinish";
+SDImageCoderOption const SDImageCoderDecodeProgressiveLoadOnlyAnimated = @"decodeProgressiveLoadOnlyAnimated";

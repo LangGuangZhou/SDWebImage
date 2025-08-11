@@ -95,6 +95,10 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageDownloaderOptions) {
      * Note this options is not compatible with `SDWebImageDownloaderDecodeFirstFrameOnly`, which always produce a UIImage/NSImage.
      */
     SDWebImageDownloaderMatchAnimatedImageClass = 1 << 12,
+    
+    SDWebImageDownloaderDecodeAllFramesAfterFinish = 1 << 13,
+    
+    SDWebImageDownloaderProgressiveLoadOnlyAnimated = 1 << 14,
 };
 
 /// Posed when URLSessionTask started (`resume` called))

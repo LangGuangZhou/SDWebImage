@@ -55,6 +55,11 @@ typedef NS_OPTIONS(NSUInteger, SDImageCacheOptions) {
      * Note this options is not compatible with `SDImageCacheDecodeFirstFrameOnly`, which always produce a UIImage/NSImage.
      */
     SDImageCacheMatchAnimatedImageClass = 1 << 7,
+    
+    /**
+     * 如果设置了SDWebImageDecodeFirstFrameOnly，本来是会产生静态图的，设置了这个flag，可以强制在完成时，解码所有的帧，产生动态图
+     */
+    SDImageCacheDecodeAllFramesAfterFinish = 1 << 8,
 };
 
 /**

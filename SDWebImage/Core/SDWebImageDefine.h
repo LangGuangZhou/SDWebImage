@@ -227,6 +227,15 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
      * @note If you have complicated transition animation, just use `SDWebImageManager` and do UI state management by yourself, do not use the top-level API (`sd_setImageWithURL:`)
      */
     SDWebImageWaitTransition = 1 << 25,
+    
+    /**
+        * 如果设置了SDWebImageDecodeFirstFrameOnly，本来是会产生静态图的，设置了这个flag，可以强制在完成时，解码所有的帧，产生动态图
+     */
+    SDWebImageDecodeAllFramesAfterFinish = 1 << 26,
+    /**
+     * 如果设置了SDWebImageProgressiveLoad默认是所有图片都支持渐进加载的，设置了这个flag，可以强制静态图不支持渐进加载
+     */
+    SDWebImageProgressiveLoadOnlyAnimated = 1 << 27,
 };
 
 

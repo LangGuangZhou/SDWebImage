@@ -159,6 +159,17 @@ FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderEncodeEmbedThumb
  */
 FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderWebImageContext API_DEPRECATED("No longer supported. Use SDWebImageContextDecodeOptions in loader API to provide options. Use SDImageCoderOptions in coder API to retrieve options.", macos(10.10, 10.10), ios(8.0, 8.0), tvos(9.0, 9.0), watchos(2.0, 2.0));
 
+/**
+ A Boolean value indicating whether to decode all frames after the image load finished. This flag can force decode all frames only and produce the animated image.
+ @note works for `SDImageCoder`.
+ */
+FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderDecodeAllFramesAfterFinish;
+
+/**
+ * 渐进式加载只对动图有效
+ */
+FOUNDATION_EXPORT SDImageCoderOption _Nonnull const SDImageCoderDecodeProgressiveLoadOnlyAnimated;
+
 #pragma mark - Coder
 /**
  This is the image coder protocol to provide custom image decoding/encoding.

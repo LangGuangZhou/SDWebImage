@@ -18,6 +18,8 @@
 
 SDImageCoderOptions * _Nonnull SDGetDecodeOptionsFromContext(SDWebImageContext * _Nullable context, SDWebImageOptions options, NSString * _Nonnull cacheKey) {
     BOOL decodeFirstFrame = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeFirstFrameOnly);
+    BOOL decodeAllFramesAfterFinish = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeAllFramesAfterFinish);
+    BOOL progressiveLoadOnlyAnimated = SD_OPTIONS_CONTAINS(options, SDWebImageProgressiveLoadOnlyAnimated);
     NSNumber *scaleValue = context[SDWebImageContextImageScaleFactor];
     CGFloat scale = scaleValue.doubleValue >= 1 ? scaleValue.doubleValue : SDImageScaleFactorForKey(cacheKey); // Use cache key to detect scale
     NSNumber *preserveAspectRatioValue = context[SDWebImageContextImagePreserveAspectRatio];
@@ -65,7 +67,8 @@ SDImageCoderOptions * _Nonnull SDGetDecodeOptionsFromContext(SDWebImageContext *
     mutableCoderOptions[SDImageCoderDecodeFileExtensionHint] = fileExtensionHint;
     mutableCoderOptions[SDImageCoderDecodeScaleDownLimitBytes] = scaleDownLimitBytesValue;
     mutableCoderOptions[SDImageCoderDecodeToHDR] = decodeToHDR;
-    
+    mutableCoderOptions[SDImageCoderDecodeAllFramesAfterFinish] = @(decodeAllFramesAfterFinish);
+    mutableCoderOptions[SDImageCoderDecodeProgressiveLoadOnlyAnimated] = @(progressiveLoadOnlyAnimated);
     return [mutableCoderOptions copy];
 }
 
@@ -102,6 +105,7 @@ UIImage * _Nullable SDImageCacheDecodeImageData(NSData * _Nonnull imageData, NSS
     UIImage *image;
     SDImageCoderOptions *coderOptions = SDGetDecodeOptionsFromContext(context, options, cacheKey);
     BOOL decodeFirstFrame = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeFirstFrameOnly);
+    BOOL decodeAllFramesAfterFinish = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeAllFramesAfterFinish);
     CGFloat scale = [coderOptions[SDImageCoderDecodeScaleFactor] doubleValue];
     
     // Grab the image coder
@@ -110,7 +114,7 @@ UIImage * _Nullable SDImageCacheDecodeImageData(NSData * _Nonnull imageData, NSS
         imageCoder = [SDImageCodersManager sharedManager];
     }
     
-    if (!decodeFirstFrame) {
+    if (!decodeFirstFrame || decodeAllFramesAfterFinish) {
         Class animatedImageClass = context[SDWebImageContextAnimatedImageClass];
         // check whether we should use `SDAnimatedImage`
         if ([animatedImageClass isSubclassOfClass:[UIImage class]] && [animatedImageClass conformsToProtocol:@protocol(SDAnimatedImage)]) {

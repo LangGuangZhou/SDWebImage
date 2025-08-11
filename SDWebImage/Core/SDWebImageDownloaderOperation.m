@@ -711,7 +711,8 @@ didReceiveResponse:(NSURLResponse *)response
     if (downloadOptions & SDWebImageDownloaderPreloadAllFrames) options |= SDWebImagePreloadAllFrames;
     if (downloadOptions & SDWebImageDownloaderAvoidDecodeImage) options |= SDWebImageAvoidDecodeImage;
     if (downloadOptions & SDWebImageDownloaderMatchAnimatedImageClass) options |= SDWebImageMatchAnimatedImageClass;
-    
+    if (downloadOptions & SDWebImageDownloaderDecodeAllFramesAfterFinish) options |= SDWebImageDecodeAllFramesAfterFinish;
+    if (downloadOptions & SDWebImageDownloaderProgressiveLoadOnlyAnimated) options |= SDWebImageProgressiveLoadOnlyAnimated;
     return options;
 }
 #pragma clang diagnostic pop

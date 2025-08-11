@@ -691,7 +691,9 @@ static BOOL SDImageIOPNGPluginBuggyNeedWorkaround(void) {
     }
     
     BOOL decodeFirstFrame = [options[SDImageCoderDecodeFirstFrameOnly] boolValue];
-    if (decodeFirstFrame || frameCount <= 1) {
+    BOOL decodeAllAfterFinish = [options[SDImageCoderDecodeAllFramesAfterFinish] boolValue];
+    BOOL onlyDecodeFirstFrame = decodeFirstFrame && !decodeAllAfterFinish;
+    if (onlyDecodeFirstFrame || frameCount <= 1) {
         animatedImage = [self.class createFrameAtIndex:0 source:source scale:scale preserveAspectRatio:preserveAspectRatio thumbnailSize:thumbnailSize lazyDecode:lazyDecode animatedImage:NO decodeToHDR:decodeToHDR];
     } else {
         NSMutableArray<SDImageFrame *> *frames = [NSMutableArray arrayWithCapacity:frameCount];

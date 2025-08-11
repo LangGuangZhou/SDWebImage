@@ -282,6 +282,8 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     if (downloadOptions & SDWebImageDownloaderPreloadAllFrames) options |= SDWebImagePreloadAllFrames;
     if (downloadOptions & SDWebImageDownloaderAvoidDecodeImage) options |= SDWebImageAvoidDecodeImage;
     if (downloadOptions & SDWebImageDownloaderMatchAnimatedImageClass) options |= SDWebImageMatchAnimatedImageClass;
+    if (downloadOptions & SDWebImageDownloaderDecodeAllFramesAfterFinish) options |= SDWebImageDecodeAllFramesAfterFinish;
+    if (downloadOptions & SDWebImageDownloaderProgressiveLoadOnlyAnimated) options |= SDWebImageProgressiveLoadOnlyAnimated;
     
     return options;
 }
@@ -625,6 +627,8 @@ didReceiveResponse:(NSURLResponse *)response
     if (options & SDWebImageDecodeFirstFrameOnly) downloaderOptions |= SDWebImageDownloaderDecodeFirstFrameOnly;
     if (options & SDWebImagePreloadAllFrames) downloaderOptions |= SDWebImageDownloaderPreloadAllFrames;
     if (options & SDWebImageMatchAnimatedImageClass) downloaderOptions |= SDWebImageDownloaderMatchAnimatedImageClass;
+    if (options & SDWebImageDecodeAllFramesAfterFinish) downloaderOptions |= SDWebImageDownloaderDecodeAllFramesAfterFinish;
+    if (options & SDWebImageProgressiveLoadOnlyAnimated) downloaderOptions |= SDWebImageDownloaderProgressiveLoadOnlyAnimated;
     
     if (cachedImage && options & SDWebImageRefreshCached) {
         // force progressive off if image already cached but forced refreshing

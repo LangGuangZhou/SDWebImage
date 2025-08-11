@@ -44,6 +44,7 @@ UIImage * _Nullable SDImageLoaderDecodeImageData(NSData * _Nonnull imageData, NS
     }
     SDImageCoderOptions *coderOptions = SDGetDecodeOptionsFromContext(context, options, cacheKey);
     BOOL decodeFirstFrame = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeFirstFrameOnly);
+    BOOL decodeAllAfterFinish = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeAllFramesAfterFinish);
     CGFloat scale = [coderOptions[SDImageCoderDecodeScaleFactor] doubleValue];
     
     // Grab the image coder
@@ -52,7 +53,7 @@ UIImage * _Nullable SDImageLoaderDecodeImageData(NSData * _Nonnull imageData, NS
         imageCoder = [SDImageCodersManager sharedManager];
     }
     
-    if (!decodeFirstFrame) {
+    if (!decodeFirstFrame || decodeAllAfterFinish) {
         // check whether we should use `SDAnimatedImage`
         Class animatedImageClass = context[SDWebImageContextAnimatedImageClass];
         if ([animatedImageClass isSubclassOfClass:[UIImage class]] && [animatedImageClass conformsToProtocol:@protocol(SDAnimatedImage)]) {
@@ -109,6 +110,9 @@ UIImage * _Nullable SDImageLoaderDecodeProgressiveImageData(NSData * _Nonnull im
     }
     SDImageCoderOptions *coderOptions = SDGetDecodeOptionsFromContext(context, options, cacheKey);
     BOOL decodeFirstFrame = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeFirstFrameOnly);
+    BOOL decodeAllAfterFinish = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeAllFramesAfterFinish) && finished;
+    BOOL progressiveOnlyAnimated = SD_OPTIONS_CONTAINS(options, SDWebImageProgressiveLoadOnlyAnimated);
+    
     CGFloat scale = [coderOptions[SDImageCoderDecodeScaleFactor] doubleValue];
     
     // Grab the progressive image coder
@@ -136,7 +140,7 @@ UIImage * _Nullable SDImageLoaderDecodeProgressiveImageData(NSData * _Nonnull im
     }
     
     [progressiveCoder updateIncrementalData:imageData finished:finished];
-    if (!decodeFirstFrame) {
+    if (!decodeFirstFrame || decodeAllAfterFinish) {
         // check whether we should use `SDAnimatedImage`
         Class animatedImageClass = context[SDWebImageContextAnimatedImageClass];
         if ([animatedImageClass isSubclassOfClass:[UIImage class]] && [animatedImageClass conformsToProtocol:@protocol(SDAnimatedImage)] && [progressiveCoder respondsToSelector:@selector(animatedImageFrameAtIndex:)]) {
@@ -151,6 +155,11 @@ UIImage * _Nullable SDImageLoaderDecodeProgressiveImageData(NSData * _Nonnull im
             }
         }
     }
+
+    if (progressiveOnlyAnimated && ([NSStringFromClass([progressiveCoder class]) isEqualToString:@"SDImageIOCoder"] || [NSStringFromClass([progressiveCoder class]) isEqualToString:@"SDImageWebPCoder"])&& !finished) {
+        return nil;
+    }
+    
     if (!image) {
         image = [progressiveCoder incrementalDecodedImageWithOptions:coderOptions];
     }

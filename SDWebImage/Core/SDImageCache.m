@@ -918,7 +918,7 @@ static NSString * _defaultDiskCacheDirectory;
     if (cacheOptions & SDImageCachePreloadAllFrames) options |= SDWebImagePreloadAllFrames;
     if (cacheOptions & SDImageCacheAvoidDecodeImage) options |= SDWebImageAvoidDecodeImage;
     if (cacheOptions & SDImageCacheMatchAnimatedImageClass) options |= SDWebImageMatchAnimatedImageClass;
-    
+    if (cacheOptions & SDImageCacheDecodeAllFramesAfterFinish) options |= SDWebImageDecodeAllFramesAfterFinish;
     return options;
 }
 #pragma clang diagnostic pop
@@ -945,6 +945,7 @@ static NSString * _defaultDiskCacheDirectory;
     if (options & SDWebImageDecodeFirstFrameOnly) cacheOptions |= SDImageCacheDecodeFirstFrameOnly;
     if (options & SDWebImagePreloadAllFrames) cacheOptions |= SDImageCachePreloadAllFrames;
     if (options & SDWebImageMatchAnimatedImageClass) cacheOptions |= SDImageCacheMatchAnimatedImageClass;
+    if (options & SDWebImageDecodeAllFramesAfterFinish) cacheOptions |= SDImageCacheDecodeAllFramesAfterFinish;
     
     return [self queryCacheOperationForKey:key options:cacheOptions context:context cacheType:cacheType done:completionBlock];
 }
